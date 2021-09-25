@@ -1,0 +1,112 @@
+{
+  "$kind": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "id": "cxPo1R",
+    "name": "get_stock",
+    "comment": "get current stock price"
+  },
+  "autoEndDialog": true,
+  "defaultResultProperty": "dialog.result",
+  "triggers": [
+    {
+      "$kind": "Microsoft.OnBeginDialog",
+      "$designer": {
+        "name": "BeginDialog",
+        "description": "",
+        "id": "CSPxcx"
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "BdobmD"
+          },
+          "activity": "${SendActivity_BdobmD()}"
+        },
+        {
+          "$kind": "Microsoft.TextInput",
+          "$designer": {
+            "id": "S9Qc6a"
+          },
+          "disabled": false,
+          "maxTurnCount": 3,
+          "alwaysPrompt": false,
+          "allowInterruptions": false,
+          "unrecognizedPrompt": "${TextInput_UnrecognizedPrompt_S9Qc6a()}",
+          "invalidPrompt": "${TextInput_InvalidPrompt_S9Qc6a()}",
+          "prompt": "${TextInput_Prompt_S9Qc6a()}",
+          "property": "user.ticker",
+          "outputFormat": "=trim(this.value)",
+          "validations": [
+            "length(this.value) == 4"
+          ],
+          "defaultValue": "msft"
+        },
+        {
+          "$kind": "Microsoft.HttpRequest",
+          "$designer": {
+            "id": "MtSYuA"
+          },
+          "resultProperty": "dialog.api_response",
+          "method": "GET",
+          "url": "https://finnhub.io/api/v1/quote?symbol=${user.ticker}&token=c57d0aqad3i84bkpao9g",
+          "responseType": "json"
+        },
+        {
+          "$kind": "Microsoft.IfCondition",
+          "$designer": {
+            "id": "QfM9zJ"
+          },
+          "condition": "=dialog.api_response.statusCode == 200",
+          "actions": [
+            {
+              "$kind": "Microsoft.SetProperties",
+              "$designer": {
+                "id": "wpuKkx"
+              },
+              "assignments": [
+                {
+                  "property": "dialog.data",
+                  "value": "dialog.api_response.content[\"c\"]"
+                }
+              ]
+            },
+            {
+              "$kind": "Microsoft.SendActivity",
+              "$designer": {
+                "id": "5VxtDH"
+              },
+              "activity": "${SendActivity_5VxtDH()}"
+            },
+            {
+              "$kind": "Microsoft.DeleteProperty",
+              "$designer": {
+                "id": "mcGaHu"
+              },
+              "property": "user.ticker"
+            }
+          ],
+          "elseActions": [
+            {
+              "$kind": "Microsoft.SendActivity",
+              "$designer": {
+                "id": "u37LRu"
+              },
+              "activity": "${SendActivity_u37LRu()}"
+            },
+            {
+              "$kind": "Microsoft.DeleteProperty",
+              "$designer": {
+                "id": "AO9jNC"
+              },
+              "property": "user.ticker"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "generator": "get_stock.lg",
+  "recognizer": "get_stock.lu.qna",
+  "id": "get_stock"
+}

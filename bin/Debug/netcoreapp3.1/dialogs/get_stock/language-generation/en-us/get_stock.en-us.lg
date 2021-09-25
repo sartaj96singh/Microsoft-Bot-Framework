@@ -1,0 +1,44 @@
+[import](common.lg)
+
+# SendActivity_BdobmD()
+[Activity
+    Text = ${SendActivity_BdobmD_text()}
+]
+
+# SendActivity_BdobmD_text()
+- Let's get stock price
+# TextInput_Prompt_S9Qc6a()
+[Activity
+    Text = ${TextInput_Prompt_S9Qc6a_text()}
+]
+
+# TextInput_Prompt_S9Qc6a_text()
+- What is the Stock ticker? ex: MSFT
+# TextInput_UnrecognizedPrompt_S9Qc6a()
+[Activity
+    Text = ${TextInput_UnrecognizedPrompt_S9Qc6a_text()}
+]
+
+# TextInput_UnrecognizedPrompt_S9Qc6a_text()
+- Sorry, I do not understand '${this.value}'. Please specify a valid stock ticker.
+# TextInput_InvalidPrompt_S9Qc6a()
+[Activity
+    Text = ${TextInput_InvalidPrompt_S9Qc6a_text()}
+]
+
+# TextInput_InvalidPrompt_S9Qc6a_text()
+- Sorry, '${this.value}' is not valid. I'm looking for a 4 letter stock ticker.
+# SendActivity_5VxtDH()
+[Activity
+    Text = ${SendActivity_5VxtDH_text()}
+]
+
+# SendActivity_5VxtDH_text()
+- The data for ${user.ticker} is ${dialog.api_response.content["c"]}
+# SendActivity_u37LRu()
+[Activity
+    Text = ${SendActivity_u37LRu_text()}
+]
+
+# SendActivity_u37LRu_text()
+- Something went wrong. ${dialog.api_response}
